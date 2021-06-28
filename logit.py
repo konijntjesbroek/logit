@@ -143,5 +143,6 @@ def main():
     jh=Journal_Header(tablet.location())
 
     print(jh.build_header())
+
 if __name__== '__main__':
     main()
