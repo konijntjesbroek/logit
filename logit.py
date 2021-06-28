@@ -15,24 +15,37 @@ from datetime import datetime as dt
 from bs4 import BeautifulSoup as bs
 from datetime import datetime as dt
 
-raw_loc =  tablet.location()
-loc_table = raw_loc[1]
-lat = round(raw_loc[1]['latitude'], 4)
-lon = round(loc_table['longitude'], 4)
-key = os.environ['OWX']
-url = f'https://api.openweathermap.org/data/2.5/weather?appid={key}&lat={lat}&lon={lon}&units=imperial'
-src = urllib.request.urlopen(url)
-soup = bs(src, 'lxml')
-wx_table = json.loads(soup.text)
+def get_wx_data(lat, lon):
+    key = os.environ['OWX']
+    url = f'https://api.openweathermap.org/data/2.5/weather?appid={key}&lat={lat}&lon={lon}&units=imperial'
+    src = urllib.request.urlopen(url)
+    soup = bs(src, 'lxml')
+    return json.loads(soup.text)
 
-print(dt.fromtimestamp(wx_table['dt']).strftime('%A, %B %d, %Y\n%H:%M'))
+class Tablet_info():
+    def __init__(self, location):
+        self.lat = round(location[1]['latitude'], 4)
+        self.lon = round(location[1]['longitude'], 4)
+        
+class Journal_Header():
+    def __init__(self, table):
+        self.lat = table['coord']['lat']
+        self.lon = table['coord']['lon']
+        self.date = dt.fromtimestamp(table['dt']).strftime('%A, %B %d, %Y @%H:%M')
+        self.temp = table['main']['temp']
+        self.e_temp = table['main']['feels_like']
+        self.hi = table['main']['temp_max']
+        self.lo = table['main']['temp_min']
+        self.rise = dt.fromtimestamp(table['sys']['sunrise']).strftime('%H:%M')
+        self.set = dt.fromtimestamp(table['sys']['sunset']).strftime('%H:%M')
 
-fields = {'Location: ': 'coord', 'Conditions: ': 'main'}
-for field in fields:
-    print(field)
-    segment = fields[field]
-    for item  in  wx_table[segment]:
-        print(f'\t{item}: {wx_table[segment][item]}')
-    print()
+def main():
+    raw_loc =  tablet.location()
+    ti = Tablet_info(raw_loc)
+    wx_table =  get_wx_data(ti.lat, ti.lon)
+    jh=Journal_Header(wx_table)
 
-print(f'Sunrise: {dt.fromtimestamp(wx_table["sys"]["sunrise"]).strftime("%H:%M")}\nSunset:  {dt.fromtimestamp(wx_table["sys"]["sunset"]).strftime("%H:%M")}')
+    print(f'{jh.date}\n  sunedges: {jh.rise}/{jh.set}')
+
+if __name__== '__main__':
+    main()
