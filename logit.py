@@ -29,15 +29,28 @@ class Tablet_info():
         
 class Journal_Header():
     def __init__(self, table):
-        self.lat = table['coord']['lat']
+        self.lat = table['coord']['lat'] 
         self.lon = table['coord']['lon']
         self.date = dt.fromtimestamp(table['dt']).strftime('%A, %B %d, %Y @%H:%M')
-        self.temp = table['main']['temp']
-        self.e_temp = table['main']['feels_like']
+        self.temp = int(round(table['main']['temp'], 0))
+        self.e_temp = int(round(table['main']['feels_like'], 0))
         self.hi = table['main']['temp_max']
         self.lo = table['main']['temp_min']
         self.rise = dt.fromtimestamp(table['sys']['sunrise']).strftime('%H:%M')
         self.set = dt.fromtimestamp(table['sys']['sunset']).strftime('%H:%M')
+    
+    def get_loc(self):
+        friendly_coords = ''
+        if self.lat >= 0:
+            friendly_coords += str(self.lat) + '° N, '
+        else:
+            friendly_coords += str(-self.lat) + '° S, '
+        if self.lon >= 0:
+            friendly_coords += str(self.lon) + '° E'
+        else:
+            friendly_coords += str(-self.lon) + '° W'
+        return friendly_coords
+
 
 def main():
     raw_loc =  tablet.location()
@@ -45,7 +58,10 @@ def main():
     wx_table =  get_wx_data(ti.lat, ti.lon)
     jh=Journal_Header(wx_table)
 
-    print(f'{jh.date}\n  sunedges: {jh.rise}/{jh.set}')
+    print(f'{jh.date} @{jh.get_loc()}')
+    print(f'  sunedges: {jh.rise}/{jh.set}')
+    print(f'  current temp/feels like: {jh.temp}/{jh.e_temp}')
+    print(f'  hi/lo: {jh.hi}/{jh.lo}')
 
 if __name__== '__main__':
     main()
