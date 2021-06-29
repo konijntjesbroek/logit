@@ -100,20 +100,16 @@ class Journal_Header():
     def get_loc(self):
         '''
         get_loc:
+            - GPS coordinates indicate that latitude is south of the equator 
+            and longitude is west of the prime meridian
             expects:
                 self
             returns:
                 friendly_coords: str; latitude and longitude as read by humans
         '''
         friendly_coords = ''
-        if self.lat >= 0:
-            friendly_coords += str(round(self.lat, 4)) + '° N, '
-        else:
-            friendly_coords += str(round(-self.lat, 4)) + '° S, '
-        if self.lon >= 0:
-            friendly_coords += str(round(self.lon, 4)) + '° E'
-        else:
-            friendly_coords += str(round(-self.lon, 4)) + '° W'
+        friendly_coords += str(round(self.lat, 4)) + '° N, ' if self.lat >= 0 else str(round(-self.lat, 4)) + '° S, '
+        friendly_coords += str(round(self.lon, 4)) + '° E' if self.lon >= 0 else friendly_coords += str(round(-self.lon, 4)) + '° W'
         return friendly_coords
     
     def build_header(self):
