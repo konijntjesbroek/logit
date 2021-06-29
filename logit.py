@@ -109,7 +109,7 @@ class Journal_Header():
         '''
         friendly_coords = ''
         friendly_coords += str(round(self.lat, 4)) + '° N, ' if self.lat >= 0 else str(round(-self.lat, 4)) + '° S, '
-        friendly_coords += str(round(self.lon, 4)) + '° E' if self.lon >= 0 else friendly_coords += str(round(-self.lon, 4)) + '° W'
+        friendly_coords += str(round(self.lon, 4)) + '° E' if self.lon >= 0 else  str(round(-self.lon, 4)) + '° W'
         return friendly_coords
     
     def build_header(self):
