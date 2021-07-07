@@ -3,7 +3,7 @@
 logit
 created by: Arlo Gittings
 created on: 2021-06-27
-last modified: 2021-06-28
+last modified: 2021-07-06
 description:
     Python tool to build a log entry
 '''
@@ -131,7 +131,7 @@ class Journal_Header():
         result += f'    current temp: {self.temp}\n'
         result += f'    effective temp: {self.e_temp}\n'
         result += f'    hi: {self.hi}\tlo: {self.lo}\n'
-        result += sep_line * 2
+        result += sep_line + '\n' + sep_line[:79]
         return result
 
 
