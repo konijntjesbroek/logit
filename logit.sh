@@ -27,4 +27,4 @@ else											# if it doesn't, make it.
 	~/projects/logit/logit.py > ${outfile}
 fi
 
-nvim -u ${nvim_config} ${outfile}
+nvim -u ${nvim_config} +10 +startinsert ${outfile}
