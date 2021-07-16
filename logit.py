@@ -123,7 +123,7 @@ class Journal_Header():
                         useful way. This is where you modify the layout of all
                         the things.
         '''
-        sep_line = 79 * '-' + '\n'
+        sep_line = 8 * '==== ---- ' + '\n'
         result =  f'{self.date}\n@{self.g_tag}\n'
         result += f' ({self.get_loc()})\n'
         result += sep_line 
