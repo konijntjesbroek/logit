@@ -2,3 +2,5 @@
                 Added README.md
                 Added Plan.md
                 Changed the header separator
+2021-07-16 0042 Fixed a typo on the header separator to align with shiftwidth
+           0101 Added insert mode movement and separators to the vim file
